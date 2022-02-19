@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer utilities {
+
+    /* Scroll thumb styles */
+   .scrollbar::-webkit-scrollbar {
+     width: .3rem;
+     background-color: #F2F2F2;
+     margin: 45px;
+   }
+   .scrollbar::-webkit-scrollbar-thumb {
+     background: #BDBDBD; 
+     border-radius: 1rem;
+     height: 2rem;
+     width: 4px;
+   }
+   
+}
