@@ -36,7 +36,7 @@ export default function UseAutocomplete({ options }) {
       exit
     }
     else {
-      await axios.csrf()
+      await csrf()
       await axios.post('/api/search-by-breed',
         { breed_id: breedId },
       )

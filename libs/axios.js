@@ -8,5 +8,5 @@ export const axios  =  Axios.create({
     withCredentials: true,
 })
 
-export const  csrf = async () => await axios.get('/sanctum/csrf-cookie')
+export const csrf = async () => await axios.get('/sanctum/csrf-cookie')
 
