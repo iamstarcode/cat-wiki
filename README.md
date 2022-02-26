@@ -4,7 +4,7 @@
 [Solution URL](https://cat-wiki.iamstarcode.com/)</br>
 
 Stack</br>
--NextJS
--Tailwind CSS
--Laravel(PHP)
+-NextJS</br>
+-Tailwind CSS</br>
+-Laravel(PHP)</br>
 
