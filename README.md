@@ -3,7 +3,7 @@
 [devChallenge](https://devchallenges.io/challenges/f4NJ53rcfgrP6sBMD2jt)</br>
 [Solution URL](https://cat-wiki.iamstarcode.com/)</br>
 
-Stack</br>
+#Stack
 -NextJS</br>
 -Tailwind CSS</br>
 -Laravel(PHP)</br>
