@@ -26,19 +26,17 @@ export default function UseAutocomplete({ options }) {
     options: options,
     onChange: (x, y, z, optionDetails) => {
       setBreedId(optionDetails?.option.breed_id)
-      //console.log(optionDetails?.option)
     },
     getOptionLabel: (option) => option.title,
   });
 
   async function handleSubmit(e) {
     e.preventDefault();
-    //console.log(breedId?.length)
     if (breedId?.length == 0) {
       exit
     }
     else {
-      //console.log(breedId)
+      await axios.csrf()
       await axios.post('/api/search-by-breed',
         { breed_id: breedId },
       )

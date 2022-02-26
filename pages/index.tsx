@@ -195,8 +195,7 @@ const Home = ({ breeds }: IHomeProps) => {
             <h2 className="w-20 h-1 font-thin bg-i-primary rounded-full mt-12"></h2>
             <h2 className="text-i-primary text-[40px] font-bold mt-5">Why should you have a cat?</h2>
             <h2 className="text-lg mt-8 font-medium">
-              Having a cat around you can actually trihher the release of calming chemicls in your body which lower your stress and anxiety levels
-            </h2>
+            Having a cat around you can actually trigger the release of calming chemicals in your body which lower your stress and anxiety leves            </h2>
             <a target="_blank" href="https://www.mentalfloss.com/article/51154/10-scientific-benefits-being-cat-owner">
               <h2 className="text-i-primary/50 inline-flex items-center text-xs font-extrabold mt-12">
                 READ MORE <span className="ml-3">{<MdArrowForward />}</span>
@@ -238,7 +237,6 @@ const Home = ({ breeds }: IHomeProps) => {
 
 export async function getServerSideProps() {
 
-  //const data = await axios.get('https://api.thecatapi.com/v1/breeds').then(res => res.data)
   const data = await axios.get('/api/search').then(res => res.data)
   const breeds = data?.map((item: any, index: number) => ({
     ['title']: item.name,

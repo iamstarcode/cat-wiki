@@ -22,16 +22,10 @@ const Id = () => {
     useEffect(() => {
         if (data !== undefined) {
             setImageId(data[0]?.reference_image_id)
-            //console.log(data[0])
         }
     }, [data])
-    useEffect(() => {
-        console.log(images)
-    }, [images])
-
+  
     function creatRating(x) {
-        //const dark = <h2 className="w-16 h-3 bg-i-primary rounded-full"></h2>
-        //const light =  <h2 className="w-16 h-3 bg-[#E0E0E0] rounded-full"></h2>
         const size = 5
         const jsx = []
         for (let i = 0; i < size; i++) {
