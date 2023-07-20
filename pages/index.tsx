@@ -18,10 +18,11 @@ interface IHomeProps {
 }
 const Home = ({ breeds }: IHomeProps) => {
 
+
   const { width } = useViewportSize();
   const [bgImgSrc, setBgImgSRc] = useState({ src: "/img/HeroImagesm.png", width: 768 })
   const [isMobile, setIsMobile] = useState<true | false>()
-  const [recents, setRecents] = useState([])
+  const [recents, setRecents] = useState<any[]>([])
 
   useEffect(() => {
 
@@ -49,15 +50,48 @@ const Home = ({ breeds }: IHomeProps) => {
   }
 
 
-  const { data, error } = useSWR('/api/most-recent', () =>
-    axios.get('/api/most-recent/4')
+  const { data, error } = useSWR('most-searched', () =>
+    axios.get('/most-searched')
       .then(res => res.data))
 
+
+  function pickObjectById(arr: any[], imageArray: any[]) {
+    const imageSet = new Set(imageArray);
+    const pickedObject = arr.filter((obj: { id: unknown }) => imageSet.has(obj.id));
+    return pickedObject || null; // Return null if no match is found
+  }
+
+
+  async function fetchImageUrl(id: string) {
+    const res = await fetch(`https://api.thecatapi.com/v1/images/${id}`)
+
+    const data = await res.json()
+
+    console.log(data)
+    //return ''
+    return data.url ?? ''
+
+  }
+
+
+
   useEffect(() => {
-    if (data) {
-      const recents = breeds.filter((item: any) => (data.includes(item.breed_id)))
-      setRecents(recents);
+
+    const as = async () => {
+      if (data) {
+        const pickedObject = pickObjectById(breeds, data);
+
+        for (let i = 0; i < pickedObject.length; i++) {
+          const element = pickedObject[i];
+          pickedObject[i]['url'] = await fetchImageUrl(element.reference_image_id)
+
+        }
+        setRecents(pickedObject);
+      }
     }
+
+    as()
+
   }, [data])
 
   return (
@@ -174,11 +208,11 @@ const Home = ({ breeds }: IHomeProps) => {
             {(!data && !error) && <h2>Loading</h2>}
             {recents && recents.map((item: any, index: number) => (
               <div key={index} className="">
-                <Link href={"breed/" + item?.breed_id}>
+                <Link href={"breed/" + item?.id}>
                   <a>
                     <Image
                       className="object-cover object-center rounded-2xl cursor-pointer"
-                      src={item?.image.url}
+                      src={item?.url}
                       layout="responsive"
                       height={150}
                       width={150} />
@@ -195,11 +229,11 @@ const Home = ({ breeds }: IHomeProps) => {
             <h2 className="w-20 h-1 font-thin bg-i-primary rounded-full mt-12"></h2>
             <h2 className="text-i-primary text-[40px] font-bold mt-5">Why should you have a cat?</h2>
             <h2 className="text-lg mt-8 font-medium">
-            Having a cat around you can actually trigger the release of calming chemicals in your body which lower your stress and anxiety leves            </h2>
+              Having a cat around you can actually trigger the release of calming chemicals in your body which lower your stress and anxiety leves            </h2>
             <a target="_blank" href="https://www.mentalfloss.com/article/51154/10-scientific-benefits-being-cat-owner">
               <h2 className="text-i-primary/50 inline-flex items-center text-xs font-extrabold mt-12">
                 READ MORE <span className="ml-3">{<MdArrowForward />}</span>
-                </h2>
+              </h2>
             </a>
           </div>
           <div className="flex space-x-2 mt-8 md:mt-0 p-2 md:p-4 md:w-6/12">
@@ -237,23 +271,13 @@ const Home = ({ breeds }: IHomeProps) => {
 
 export async function getServerSideProps() {
 
-  const data = await axios.get('/api/search').then(res => res.data)
+  const data = await axios.get('/search').then(res => res.data)
+
   const breeds = data?.map((item: any, index: number) => ({
-    ['title']: item.name,
-    ['breed_id']: item.id,
-    ['image']: item.image ? item.image : ""
+    ['name']: item.name,
+    'id': item.id,
+    ['reference_image_id']: item.reference_image_id ? item.reference_image_id : ""
   }))
-
-  /* const breeds = [
-    { title: 'The Shawshank Redemption', breed_id: 1994 },
-    { title: 'The Godfather', breed_id: 1972 },
-    { title: 'The Godfather: Part II', breed_id: 1974 },
-    { title: 'The Dark Knight', breed_id: 2008 },
-    { title: '12 Angry Men', breed_id: 1957 },
-    { title: "Schindler's List", breed_id: 1993 },
-    { title: 'Pulp Fiction', breed_id: 1994 },
-  ] */
-
   return {
     props: {
       breeds,
