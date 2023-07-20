@@ -8,170 +8,182 @@ import Axios from 'axios'
 import Image from 'next/image'
 
 const Id = () => {
-    const id = useRouter().query.id
-    const [imageId, setImageId] = useState('')
+  const id = useRouter().query.id
+  const [imageId, setImageId] = useState('')
 
-    const { data, error } = useSWR(`/api/breed/${id}`, () =>
-        axios.get(`/api/breed/${id}`).then((res) => res.data)
-    )
+  /*  const { data, error } = useSWR(`/breed/${id}`, () =>
+    axios.get(`/breed/${id}`).then((res) => res.data)
+  ) */
 
-    const { data: images, error: errorImages } = useSWR(`/api/images-by-breed/${id}`, () =>
-        axios.get(`/api/images-by-breed/${id}`).then((res) => res.data)
-    )
+  //const data = await axios.get('/search').then(res => res.data)
 
-    useEffect(() => {
-        if (data !== undefined) {
-            setImageId(data[0]?.reference_image_id)
-        }
-    }, [data])
-  
-    function creatRating(x) {
-        const size = 5
-        const jsx = []
-        for (let i = 0; i < size; i++) {
-            if (i < x) {
-                jsx.push(<h2 key={i} className="w-16 h-3 bg-i-primary rounded-full"></h2>)
-            }
-            else {
-                jsx.push(<h2 key={i} className="w-16 h-3 bg-[#E0E0E0] rounded-full"></h2>)
-            }
+  const { data, error } = useSWR(`/breed/${id}`, () =>
+    axios.get('/search').then((res) => {
+      const breed = res.data.find((obj) => obj.id === id)
+      return breed
+    })
+  )
 
-        }
-        return jsx;
+  const { data: images, error: errorImages } = useSWR(
+    `images-by-breed/${id}`,
+    () => axios.get(`/images/${id}`).then((res) => res.data)
+  )
+
+  useEffect(() => {
+    if (data !== undefined) {
+      setImageId(data.reference_image_id)
     }
+  }, [data])
 
-    return (
-        <>
-            <div className="flex flex-col items-center justify-center py-2">
-                <Head>
-                    <title>Breed</title>
-                    <link rel="icon" href="/favicon.ico" />
-                </Head>
+  function creatRating(x) {
+    const size = 5
+    const jsx = []
+    for (let i = 0; i < size; i++) {
+      if (i < x) {
+        jsx.push(
+          <h2 key={i} className="h-3 w-16 rounded-full bg-i-primary"></h2>
+        )
+      } else {
+        jsx.push(
+          <h2 key={i} className="h-3 w-16 rounded-full bg-[#E0E0E0]"></h2>
+        )
+      }
+    }
+    return jsx
+  }
 
-                <div className="flex w-full flex-col">
-                    <div className="flex flex-wrap">
-                        <div className="w-full md:w-2/6 p-5">
-                            {imageId && (
-                                <Image
-                                    className="object-cover object-center rounded-2xl"
-                                    src={`https://cdn2.thecatapi.com/images/${imageId}.jpg`}
-                                    height={270}
-                                    width={270}
-                                />
-                            )}
-                        </div>
-                        <div className="w-full md:w-4/6 md:p-5 flex-col">
-                            {data && (
-                                <>
-                                    <h2 className="text-i-primary text-4xl font-semibold">
-                                        {data[0]?.name}
-                                    </h2>
-                                    <h2 className="text-i-primary text-lg font-medium mt-5">
-                                        {data[0]?.description}
-                                    </h2>
-                                    <h2 className="text-i-primary text-lg font-medium mt-5">
-                                        <span className=" font-bold">Temprament: </span>
-                                        {data[0]?.temperament}
-                                    </h2>
-                                    <h2 className="text-i-primary text-lg font-medium mt-5">
-                                        <span className=" font-bold">Origin: </span>
-                                        {data[0]?.origin}
-                                    </h2>
-                                    <h2 className="text-i-primary text-lg font-medium mt-5">
-                                        <span className=" font-bold">Life Span: </span>
-                                        {data[0]?.life_span} years
-                                    </h2>
-                                    <div className="flex flex-wrap items-center justify-between mt-5 w-full md:w-9/12">
-                                        <h2 className=" text-i-primary text-lg font-semibold">
-                                            Adaptability:
-                                        </h2>
-                                        <div className="grid grid-cols-5 gap-4">
-                                            {creatRating(data[0]?.adaptability)}
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-wrap items-center justify-between mt-5 w-full md:w-9/12">
-                                        <h2 className=" text-i-primary text-lg font-semibold">
-                                            Affection level:
-                                        </h2>
-                                        <div className="grid grid-cols-5 gap-4">
-                                            {creatRating(data[0]?.affection_level)}
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-wrap items-center justify-between mt-5 w-full md:w-9/12">
-                                        <h2 className=" text-i-primary text-lg font-semibold">
-                                            Child freiendly:
-                                        </h2>
-                                        <div className="grid grid-cols-5 gap-4">
-                                            {creatRating(data[0]?.child_friendly)}
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-wrap items-center justify-between mt-5 w-full md:w-9/12">
-                                        <h2 className=" text-i-primary text-lg font-semibold">
-                                            Grooming:
-                                        </h2>
-                                        <div className="grid grid-cols-5 gap-4">
-                                            {creatRating(data[0]?.grooming)}
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-wrap items-center justify-between mt-5 w-full md:w-9/12">
-                                        <h2 className=" text-i-primary text-lg font-semibold">
-                                            Intelligence:
-                                        </h2>
-                                        <div className="grid grid-cols-5 gap-4">
-                                            {creatRating(data[0]?.intelligence)}
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-wrap items-center justify-between mt-5 w-full md:w-9/12">
-                                        <h2 className=" text-i-primary text-lg font-semibold">
-                                            Health issues:
-                                        </h2>
-                                        <div className="grid grid-cols-5 gap-4">
-                                            {creatRating(data[0]?.health_issues)}
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-wrap items-center justify-between mt-5 w-full md:w-9/12">
-                                        <h2 className=" text-i-primary text-lg font-semibold">
-                                            Social needs:
-                                        </h2>
-                                        <div className="grid grid-cols-5 gap-4">
-                                            {creatRating(data[0]?.social_needs)}
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-wrap items-center justify-between mt-5 w-full md:w-9/12">
-                                        <h2 className=" text-i-primary text-lg font-semibold">
-                                            Stranger friendly:
-                                        </h2>
-                                        <div className="grid grid-cols-5 gap-4">
-                                            {creatRating(data[0]?.stranger_friendly)}
-                                        </div>
-                                    </div>
-                                </>
-                            )}
-                        </div>
-                    </div>
-                    {images && 
-                    <div className="s mt-5">
-                        <h2 className="text-i-primary text-4xl font-semibold">
-                           Other photos
-                        </h2>
+  return (
+    <>
+      <div className="flex flex-col items-center justify-center py-2">
+        <Head>
+          <title>Breed</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-                        <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-14">
-                            {images.map((image,x)=>(
-                                <Image
-                                className="rounded-3xl bg-cover bg-center"
-                                key={x}
-                                src={image.url}
-                                height={200}
-                                width={200}
-                                />
-                            ))}
-                        </div>
-                    </div>}
-
-                </div>
+        <div className="flex w-full flex-col">
+          <div className="flex flex-wrap">
+            <div className="w-full p-5 md:w-2/6">
+              {imageId && (
+                <Image
+                  className="rounded-2xl object-cover object-center"
+                  src={`https://cdn2.thecatapi.com/images/${imageId}.jpg`}
+                  height={270}
+                  width={270}
+                />
+              )}
             </div>
-        </>
-    )
+            <div className="w-full flex-col md:w-4/6 md:p-5">
+              {data && (
+                <>
+                  <h2 className="text-4xl font-semibold text-i-primary">
+                    {data.name}
+                  </h2>
+                  <h2 className="mt-5 text-lg font-medium text-i-primary">
+                    {data.description}
+                  </h2>
+                  <h2 className="mt-5 text-lg font-medium text-i-primary">
+                    <span className=" font-bold">Temprament: </span>
+                    {data.temperament}
+                  </h2>
+                  <h2 className="mt-5 text-lg font-medium text-i-primary">
+                    <span className=" font-bold">Origin: </span>
+                    {data.origin}
+                  </h2>
+                  <h2 className="mt-5 text-lg font-medium text-i-primary">
+                    <span className=" font-bold">Life Span: </span>
+                    {data.life_span} years
+                  </h2>
+                  <div className="mt-5 flex w-full flex-wrap items-center justify-between md:w-9/12">
+                    <h2 className=" text-lg font-semibold text-i-primary">
+                      Adaptability:
+                    </h2>
+                    <div className="grid grid-cols-5 gap-4">
+                      {creatRating(data.adaptability)}
+                    </div>
+                  </div>
+                  <div className="mt-5 flex w-full flex-wrap items-center justify-between md:w-9/12">
+                    <h2 className=" text-lg font-semibold text-i-primary">
+                      Affection level:
+                    </h2>
+                    <div className="grid grid-cols-5 gap-4">
+                      {creatRating(data.affection_level)}
+                    </div>
+                  </div>
+                  <div className="mt-5 flex w-full flex-wrap items-center justify-between md:w-9/12">
+                    <h2 className=" text-lg font-semibold text-i-primary">
+                      Child freiendly:
+                    </h2>
+                    <div className="grid grid-cols-5 gap-4">
+                      {creatRating(data.child_friendly)}
+                    </div>
+                  </div>
+                  <div className="mt-5 flex w-full flex-wrap items-center justify-between md:w-9/12">
+                    <h2 className=" text-lg font-semibold text-i-primary">
+                      Grooming:
+                    </h2>
+                    <div className="grid grid-cols-5 gap-4">
+                      {creatRating(data.grooming)}
+                    </div>
+                  </div>
+                  <div className="mt-5 flex w-full flex-wrap items-center justify-between md:w-9/12">
+                    <h2 className=" text-lg font-semibold text-i-primary">
+                      Intelligence:
+                    </h2>
+                    <div className="grid grid-cols-5 gap-4">
+                      {creatRating(data.intelligence)}
+                    </div>
+                  </div>
+                  <div className="mt-5 flex w-full flex-wrap items-center justify-between md:w-9/12">
+                    <h2 className=" text-lg font-semibold text-i-primary">
+                      Health issues:
+                    </h2>
+                    <div className="grid grid-cols-5 gap-4">
+                      {creatRating(data.health_issues)}
+                    </div>
+                  </div>
+                  <div className="mt-5 flex w-full flex-wrap items-center justify-between md:w-9/12">
+                    <h2 className=" text-lg font-semibold text-i-primary">
+                      Social needs:
+                    </h2>
+                    <div className="grid grid-cols-5 gap-4">
+                      {creatRating(data.social_needs)}
+                    </div>
+                  </div>
+                  <div className="mt-5 flex w-full flex-wrap items-center justify-between md:w-9/12">
+                    <h2 className=" text-lg font-semibold text-i-primary">
+                      Stranger friendly:
+                    </h2>
+                    <div className="grid grid-cols-5 gap-4">
+                      {creatRating(data.stranger_friendly)}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+          {images && (
+            <div className="s mt-5">
+              <h2 className="text-4xl font-semibold text-i-primary">
+                Other photos
+              </h2>
+
+              <div className="mt-5 grid grid-cols-2 gap-14 md:grid-cols-4">
+                {images.map((image, x) => (
+                  <Image
+                    className="rounded-3xl bg-cover bg-center"
+                    key={x}
+                    src={image.url}
+                    height={200}
+                    width={200}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  )
 }
 
 export default Id

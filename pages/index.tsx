@@ -66,11 +66,7 @@ const Home = ({ breeds }: IHomeProps) => {
     const res = await fetch(`https://api.thecatapi.com/v1/images/${id}`)
 
     const data = await res.json()
-
-    console.log(data)
-    //return ''
     return data.url ?? ''
-
   }
 
 
@@ -278,6 +274,7 @@ export async function getServerSideProps() {
     'id': item.id,
     ['reference_image_id']: item.reference_image_id ? item.reference_image_id : ""
   }))
+
   return {
     props: {
       breeds,
