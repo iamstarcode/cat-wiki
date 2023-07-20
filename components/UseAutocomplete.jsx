@@ -19,9 +19,9 @@ export default function UseAutocomplete({ options }) {
     id: 'use-autocomplete',
     options: options,
     onChange: (x, y, z, optionDetails) => {
-      setBreedId(optionDetails?.option.breed_id)
+      setBreedId(optionDetails?.option.id)
     },
-    getOptionLabel: (option) => option.title,
+    getOptionLabel: (option) => option.name,
   })
 
   async function handleSubmit(e) {
@@ -29,14 +29,14 @@ export default function UseAutocomplete({ options }) {
     if (breedId?.length == 0) {
       return
     } else {
-      await axios
+      /* await axios
         .post('/search-by-breed', { breed_id: breedId })
         .then((res) => res)
         .catch((e) => {
           if (e.response.status == 422) {
             alert(e.response.data.message)
           }
-        })
+        }) */
       router.push('breed/' + breedId)
     }
   }
@@ -82,7 +82,7 @@ export default function UseAutocomplete({ options }) {
                   className=" focus::bg-slate-500 mx-1 rounded-md py-2 px-2 text-black hover:cursor-pointer hover:bg-slate-100"
                   {...getOptionProps({ option, index })}
                 >
-                  {option.title}
+                  {option.name}
                 </li>
               ))}
             </ul>
