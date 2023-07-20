@@ -50,8 +50,8 @@ const Home = ({ breeds }: IHomeProps) => {
   }
 
 
-  const { data, error } = useSWR('most-searched', () =>
-    axios.get('/most-searched')
+  const { data, error } = useSWR('most-searched/4', () =>
+    axios.get('/most-searched/4')
       .then(res => res.data))
 
 

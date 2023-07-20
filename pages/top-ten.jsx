@@ -8,18 +8,34 @@ import Link from 'next/link'
 const TopTen = () => {
   const [recents, setRecents] = useState([])
 
-  const { data, error } = useSWR('/api/search', () =>
-    axios.get('/api/search').then((res) => res.data)
+  const { data, error } = useSWR('/search', () =>
+    axios.get('/search').then((res) => res.data)
   )
 
-  const { data: mData, error: mError } = useSWR('/api/most-recent/10', () =>
-    axios.get('/most-searched').then((res) => res.data)
+  const { data: mData, error: mError } = useSWR('/most-recent/10', () =>
+    axios.get('/most-searched/10').then((res) => res.data)
   )
+
+  async function fetchImageUrl(id) {
+    const res = await fetch(`https://api.thecatapi.com/v1/images/${id}`)
+
+    const data = await res.json()
+    return data.url ?? ''
+  }
 
   useEffect(() => {
+    const as = async (recents) => {
+      for (let i = 0; i < recents.length; i++) {
+        const element = recents[i]
+        recents[i]['url'] = await fetchImageUrl(element.reference_image_id)
+      }
+      setRecents(recents)
+    }
+
+    let recents
     if (data && mData) {
       const recents = data.filter((item) => mData.includes(item?.id))
-      setRecents(recents)
+      as(recents)
     }
   }, [data, mData])
 
@@ -38,7 +54,7 @@ const TopTen = () => {
           {recents &&
             recents.map((item, i) => (
               <div
-                className="mt-5 flex flex-col md:flex-row  md:flex-nowrap md:space-x-4"
+                className="mt-5 flex flex-col space-y-3 md:flex-row  md:flex-nowrap md:space-x-4"
                 key={i}
               >
                 <div className=" md:w-3/12">
@@ -46,7 +62,7 @@ const TopTen = () => {
                     <a>
                       <Image
                         className="cursor-pointer rounded-3xl object-cover object-center"
-                        src={item?.image.url}
+                        src={item?.url}
                         layout="responsive"
                         height={250}
                         width={250}

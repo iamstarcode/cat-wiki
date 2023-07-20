@@ -11,12 +11,6 @@ const Id = () => {
   const id = useRouter().query.id
   const [imageId, setImageId] = useState('')
 
-  /*  const { data, error } = useSWR(`/breed/${id}`, () =>
-    axios.get(`/breed/${id}`).then((res) => res.data)
-  ) */
-
-  //const data = await axios.get('/search').then(res => res.data)
-
   const { data, error } = useSWR(`/breed/${id}`, () =>
     axios.get('/search').then((res) => {
       const breed = res.data.find((obj) => obj.id === id)
