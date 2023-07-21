@@ -18,7 +18,6 @@ interface IHomeProps {
 }
 const Home = ({ breeds }: IHomeProps) => {
 
-
   const { width } = useViewportSize();
   const [bgImgSrc, setBgImgSRc] = useState({ src: "/img/HeroImagesm.png", width: 768 })
   const [isMobile, setIsMobile] = useState<true | false>()
@@ -278,7 +277,6 @@ export async function getServerSideProps() {
   return {
     props: {
       breeds,
-      //data
     }
   }
 }
