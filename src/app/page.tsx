@@ -2,6 +2,7 @@
 import Image from "next/image"
 import Link from "next/link"
 
+import { Button } from "@/components/ui/button"
 import Search from "@/components/Search"
 
 /* import { MdArrowForward, MdClose } from "react-icons/md"
@@ -13,7 +14,23 @@ import { axios } from "../libs/axios"
 interface IHomeProps {
   breeds: []
 }
-const Home = ({ breeds }: IHomeProps) => {
+
+const getBreeds = async () => {
+  //https://api.thecatapi.com/v1/images/search?limit=10
+  //https://api.thecatapi.com/v1/breeds
+  const res = await fetch("https://api.thecatapi.com/v1/breeds", {
+    method: "GET",
+    headers: {
+      "x-api-key": process.env.NEXT_PUBLIC_API_KEY!,
+    },
+  })
+
+  const data = await res.text()
+  console.log(process.env.NEXT_PUBLIC_API_KEY)
+  return data
+}
+const Home = async () => {
+  const breeds = await getBreeds()
   /*   const { width } = useViewportSize()
   const [bgImgSrc, setBgImgSRc] = useState({
     src: "/img/HeroImagesm.png",
@@ -100,7 +117,7 @@ const Home = ({ breeds }: IHomeProps) => {
               <h2 className="text-white text-xs md:text-xl font-normal mb-2">
                 Get to know more about your cat breed
               </h2>
-              <Search />
+              <Search breeds={breeds} />
               {/* isMobile */}
             </div>
           </div>

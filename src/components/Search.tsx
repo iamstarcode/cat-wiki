@@ -47,7 +47,8 @@ const statuses: Status[] = [
   },
 ]
 
-export default function ComboBoxResponsive() {
+export default function Search(breeds: any) {
+  console.log(breeds)
   const [open, setOpen] = React.useState(false)
   const isDesktop = useMedia("(min-width: 768px)", true)
 
@@ -76,7 +77,10 @@ export default function ComboBoxResponsive() {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="outline" className="w-[150px] justify-start">
+        <Button
+          variant="outline"
+          className="w-[150px] text-i-primary justify-start"
+        >
           {selectedStatus ? <>{selectedStatus.label}</> : <>+ Set status</>}
         </Button>
       </DrawerTrigger>
