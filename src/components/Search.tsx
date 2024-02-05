@@ -49,21 +49,17 @@ const statuses: Status[] = [
 
 export default function Search(breeds: any) {
   const mapped = breeds.breeds.map((item: any) => ({
-    ["name"]: item.name,
+    name: item.name,
     id: item.id,
     value: item.id,
     label: item.name,
-    ["reference_image_id"]: item.reference_image_id
-      ? item.reference_image_id
-      : "",
+    refrenceImageId: item.reference_image_id ? item.reference_image_id : "",
   }))
 
   const [open, setOpen] = React.useState(false)
   const isDesktop = useMedia("(min-width: 768px)", true)
 
-  const [selectedStatus, setSelectedStatus] = React.useState<Status | null>(
-    null
-  )
+  const [selectedBreed, setSelectedBreed] = React.useState<Status | null>(null)
 
   if (isDesktop) {
     return (
@@ -73,14 +69,14 @@ export default function Search(breeds: any) {
             variant="outline"
             className="text-i-primary w-[150px] justify-start"
           >
-            {selectedStatus ? <>{selectedStatus.label}</> : <>+ Set status</>}
+            {selectedBreed ? <>{selectedBreed.label}</> : <>Search breed...</>}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0" align="start">
           <StatusList
             mapped={mapped}
             setOpen={setOpen}
-            setSelectedStatus={setSelectedStatus}
+            setSelectedBreed={setSelectedBreed}
           />
         </PopoverContent>
       </Popover>
@@ -94,7 +90,7 @@ export default function Search(breeds: any) {
           variant="outline"
           className="w-[150px] text-i-primary justify-start"
         >
-          {selectedStatus ? <>{selectedStatus.label}</> : <>+ Set status</>}
+          {selectedBreed ? <>{selectedBreed.label}</> : <>Search breed...</>}
         </Button>
       </DrawerTrigger>
       <DrawerContent>
@@ -102,7 +98,7 @@ export default function Search(breeds: any) {
           <StatusList
             mapped={mapped}
             setOpen={setOpen}
-            setSelectedStatus={setSelectedStatus}
+            setSelectedBreed={setSelectedBreed}
           />
         </div>
       </DrawerContent>
@@ -112,11 +108,11 @@ export default function Search(breeds: any) {
 
 function StatusList({
   setOpen,
-  setSelectedStatus,
+  setSelectedBreed,
   mapped,
 }: {
   setOpen: (open: boolean) => void
-  setSelectedStatus: (status: Status | null) => void
+  setSelectedBreed: (status: Status | null) => void
   mapped: any
 }) {
   return (
@@ -130,7 +126,7 @@ function StatusList({
               key={status.value}
               value={status.value}
               onSelect={(value) => {
-                setSelectedStatus(
+                setSelectedBreed(
                   statuses.find((priority) => priority.value === value) || null
                 )
                 setOpen(false)

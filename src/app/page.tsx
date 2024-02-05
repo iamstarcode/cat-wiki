@@ -18,11 +18,16 @@ interface IHomeProps {
 const getBreeds = async () => {
   //https://api.thecatapi.com/v1/images/search?limit=10
   //https://api.thecatapi.com/v1/breeds
+
+  const headers = new Headers({
+    "x-api-key": process.env.NEXT_PUBLIC_API_KEY!,
+    "Content-Type": "application/json",
+  })
+
   const res = await fetch("https://api.thecatapi.com/v1/breeds", {
     method: "GET",
-    headers: {
-      "x-api-key": process.env.NEXT_PUBLIC_API_KEY!,
-    },
+    headers,
+    redirect: "follow",
   })
 
   const data = await res.text()
