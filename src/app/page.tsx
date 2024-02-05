@@ -26,8 +26,10 @@ const getBreeds = async () => {
   })
 
   const data = await res.text()
-  console.log(process.env.NEXT_PUBLIC_API_KEY)
-  return data
+
+  const parsed = JSON.parse(data)
+
+  return parsed
 }
 const Home = async () => {
   const breeds = await getBreeds()

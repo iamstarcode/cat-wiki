@@ -48,7 +48,16 @@ const statuses: Status[] = [
 ]
 
 export default function Search(breeds: any) {
-  console.log(breeds)
+  const mapped = breeds.breeds.map((item: any) => ({
+    ["name"]: item.name,
+    id: item.id,
+    value: item.id,
+    label: item.name,
+    ["reference_image_id"]: item.reference_image_id
+      ? item.reference_image_id
+      : "",
+  }))
+
   const [open, setOpen] = React.useState(false)
   const isDesktop = useMedia("(min-width: 768px)", true)
 
@@ -68,7 +77,11 @@ export default function Search(breeds: any) {
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0" align="start">
-          <StatusList setOpen={setOpen} setSelectedStatus={setSelectedStatus} />
+          <StatusList
+            mapped={mapped}
+            setOpen={setOpen}
+            setSelectedStatus={setSelectedStatus}
+          />
         </PopoverContent>
       </Popover>
     )
@@ -86,7 +99,11 @@ export default function Search(breeds: any) {
       </DrawerTrigger>
       <DrawerContent>
         <div className="mt-4 border-t">
-          <StatusList setOpen={setOpen} setSelectedStatus={setSelectedStatus} />
+          <StatusList
+            mapped={mapped}
+            setOpen={setOpen}
+            setSelectedStatus={setSelectedStatus}
+          />
         </div>
       </DrawerContent>
     </Drawer>
@@ -96,9 +113,11 @@ export default function Search(breeds: any) {
 function StatusList({
   setOpen,
   setSelectedStatus,
+  mapped,
 }: {
   setOpen: (open: boolean) => void
   setSelectedStatus: (status: Status | null) => void
+  mapped: any
 }) {
   return (
     <Command>
@@ -106,7 +125,7 @@ function StatusList({
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup>
-          {statuses.map((status) => (
+          {mapped.map((status: any) => (
             <CommandItem
               key={status.value}
               value={status.value}
