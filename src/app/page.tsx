@@ -1,21 +1,10 @@
-//import React, { forwardRef, Fragment, useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-/* import { MdArrowForward, MdClose } from "react-icons/md"
- */
-
 import { ArrowRightIcon } from "lucide-react"
 
 import Search from "@/components/Search"
 
-interface IHomeProps {
-  breeds: []
-}
-
 const getBreeds = async () => {
-  //https://api.thecatapi.com/v1/images/search?limit=10
-  //https://api.thecatapi.com/v1/breeds
-
   const headers = new Headers({
     "x-api-key": process.env.NEXT_PUBLIC_API_KEY!,
     "Content-Type": "application/json",
@@ -185,9 +174,12 @@ const Home = async () => {
               target="_blank"
               href="https://www.mentalfloss.com/article/51154/10-scientific-benefits-being-cat-owner"
             >
-              <h2 className="text-i-primary/50 inline-flex items-center text-xs font-extrabold mt-12">
-                READ MORE <span className="ml-3">MdArrowForward</span>
-              </h2>
+              <div className="text-i-primary/50 inline-flex  items-center ">
+                <h2 className="text-xs md:text-sm font-extrabold">READ MORE</h2>
+                <span className=" ml-3">
+                  {<ArrowRightIcon className="h-4 w-4" />}
+                </span>
+              </div>
             </a>
           </div>
           <div className="flex space-x-2 mt-8 md:mt-0 p-2 md:p-4 md:w-6/12">

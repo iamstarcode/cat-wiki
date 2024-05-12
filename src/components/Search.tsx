@@ -45,6 +45,7 @@ export default function Search(props: any) {
 
   React.useEffect(() => {
     if (selectedBreed != null) {
+      router.push(`breed/${selectedBreed.id}`)
       console.log(selectedBreed)
     }
   }, [selectedBreed])
