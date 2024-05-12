@@ -1,15 +1,12 @@
 //import React, { forwardRef, Fragment, useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-
-import { Button } from "@/components/ui/button"
-import Search from "@/components/Search"
-
 /* import { MdArrowForward, MdClose } from "react-icons/md"
  */
-import UseAutocomplete from "../components/UseAutocomplete"
-import useViewportSize from "../hooks/useWindowResize"
-import { axios } from "../libs/axios"
+
+import { ArrowRightIcon } from "lucide-react"
+
+import Search from "@/components/Search"
 
 interface IHomeProps {
   breeds: []
@@ -142,10 +139,12 @@ const Home = async () => {
               66+ Breeds for you to discover
             </h2>
             <Link href="/top-ten">
-              <h2 className="text-i-primary/50 inline-flex items-end text-xs md:text-sm font-extrabold">
-                SEE MORE
-                <span className=" ml-3"> {/*   <MdArrowForward /> */}</span>
-              </h2>
+              <div className="text-i-primary/50 inline-flex  items-center ">
+                <h2 className="text-xs md:text-sm font-extrabold">SEE MORE</h2>
+                <span className=" ml-3">
+                  {<ArrowRightIcon className="h-4 w-4" />}
+                </span>
+              </div>
             </Link>
           </div>
 

@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import { Check, ChevronsUpDown } from "lucide-react"
 import { useMedia } from "react-use"
 
@@ -28,6 +29,7 @@ type Breed = {
 }
 
 export default function Search(props: any) {
+  const router = useRouter()
   const mapped = props.breeds.map((item: any) => ({
     name: item.name,
     id: item.id,
