@@ -113,7 +113,7 @@ const Home = async () => {
           className=" w-full flex-col bg-no-repeat bg-cover bg-center rounded-tl-[2.5rem] rounded-tr-[2.5rem]"
           style={{ backgroundImage: `url(/img/HeroImagelg.png)` }}
         >
-          <div className="flex-col h-40 md:h-52 text-white mt-3 px-8 py-4 md:mt-5 md:px-12 md:pb-28 md:text-2xl">
+          <div className="flex-col h-40 md:h-52  mt-3 px-8 py-4 md:mt-5 md:px-12 md:pb-28 md:text-2xl">
             <div className="z-10 w-[150px] md:w-[300px]">
               <Image
                 alt="big logo"

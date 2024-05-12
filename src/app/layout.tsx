@@ -11,8 +11,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en-US" suppressHydrationWarning>
       <head />
-      <body className="min-h-screen bg-background font-sans text-foreground antialiased">
-        <div className="container mx-auto mt-0 flex flex-col">
+      <body className="min-h-screen font-sans antialiased">
+        <div className="max-w-7xl mx-auto mt-0 flex flex-col">
           <main className="px-4 pt-4 pb-0 lg:px-8 lg:pt-8 lg:pb-0  ">
             <div>
               <Link href={"/"}>

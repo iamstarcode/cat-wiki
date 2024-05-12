@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Check, ChevronsUpDown } from "lucide-react"
 import { useMedia } from "react-use"
 
 import { Button } from "@/components/ui/button"
@@ -50,14 +51,12 @@ export default function Search(props: any) {
     return (
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            className="text-i-primary w-[150px] justify-start"
-          >
+          <Button variant="outline" className="w-[180px] justify-between">
             {selectedBreed ? <>{selectedBreed.label}</> : <>Search breed...</>}
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0" align="start">
+        <PopoverContent className="w-[180px] p-0" align="start">
           <BreedList
             mapped={mapped}
             setOpen={setOpen}
@@ -71,10 +70,7 @@ export default function Search(props: any) {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button
-          variant="outline"
-          className="w-[150px] text-i-primary justify-start"
-        >
+        <Button variant="outline" className="w-[180px] justify-start">
           {selectedBreed ? <>{selectedBreed.label}</> : <>Search breed...</>}
         </Button>
       </DrawerTrigger>
