@@ -52,7 +52,7 @@ export default function Search(props: any) {
       // router.push(`breed/${selectedBreed.id}`)
       //console.log(selectedBreed)
       const updatedSearches = [selectedBreed.id, ...(recentSearches as any)]
-      const trimmedSearches = updatedSearches.slice(0, 5)
+      const trimmedSearches = updatedSearches.slice(0, 1)
       setRecentSearches(trimmedSearches)
     }
   }, [selectedBreed])

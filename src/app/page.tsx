@@ -1,28 +1,10 @@
 import Image from "next/image"
 import Link from "next/link"
+import { getURL } from "@/utils"
 import { ArrowRightIcon } from "lucide-react"
 
 import RecentSearches from "@/components/MostSearched"
 import Search from "@/components/Search"
-
-const getBreeds = async () => {
-  const headers = new Headers({
-    "x-api-key": process.env.NEXT_PUBLIC_API_KEY!,
-    "Content-Type": "application/json",
-  })
-
-  const res = await fetch("https://api.thecatapi.com/v1/breeds", {
-    method: "GET",
-    headers,
-    redirect: "follow",
-  })
-
-  const data = await res.text()
-
-  const parsed = JSON.parse(data)
-
-  return parsed
-}
 
 const getMostSearched = async () => {
   const headers = new Headers({
@@ -60,16 +42,17 @@ const getMostSearched = async () => {
     mostSearched.push({
       imageUrl: parsed[0].url,
       name: parsed[0].breeds[0].name,
-      id: parsed[0].breeds[0].name.id,
+      id: parsed[0].breeds[0].id,
     })
   }
 
   return mostSearched
 }
 const Home = async () => {
-  const breeds = await getBreeds()
-  const mostSearched = await getMostSearched()
-  console.log(mostSearched)
+  const res = await fetch(getURL() + "/api/breeds")
+  const { data: breeds } = await res.json()
+  //const mostSearched = await getMostSearched()
+  //console.log(mostSearched)
 
   /*   const { width } = useViewportSize()
   const [bgImgSrc, setBgImgSRc] = useState({
@@ -158,7 +141,6 @@ const Home = async () => {
                 Get to know more about your cat breed
               </h2>
               <Search breeds={breeds} />
-              {/* isMobile */}
             </div>
           </div>
         </div>

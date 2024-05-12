@@ -1,12 +1,26 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useLocalStorage } from "react-use"
 
 const RecentSearches: React.FC = () => {
   const [recentSearches, _] = useLocalStorage<string[]>("recentSearches", [])
+  const [breeds, setBreeds] = useState<any | null>(null)
 
-  // console.log(recentSearches)
+  useEffect(() => {
+    const fetchData = async () => {
+      if (recentSearches != null) {
+        const url = `/api/breeds-image?ids=${recentSearches?.join(",")}`
+        const response = await fetch(url)
+        const data = await response.json()
+        //console.log(data.mostSearched, "dcknjrndjnjdnj")
+        setBreeds(data.data)
+      }
+    }
+
+    fetchData()
+  }, [recentSearches])
+
   return (
     <div>
       <ul>
