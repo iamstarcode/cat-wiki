@@ -20,6 +20,7 @@ const RecentSearches: React.FC = () => {
 
     fetchData()
   }, [recentSearches])
+  console.log(breeds, "kedediekdiekdi")
 
   return (
     <div>
