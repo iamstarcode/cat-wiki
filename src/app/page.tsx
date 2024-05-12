@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { ArrowRightIcon } from "lucide-react"
 
+import RecentSearches from "@/components/MostSearched"
 import Search from "@/components/Search"
 
 const getBreeds = async () => {
@@ -22,8 +23,53 @@ const getBreeds = async () => {
 
   return parsed
 }
+
+const getMostSearched = async () => {
+  const headers = new Headers({
+    "x-api-key": process.env.NEXT_PUBLIC_API_KEY!,
+    "Content-Type": "application/json",
+  })
+
+  const mostSearched = []
+  const breeds = [
+    "abyss",
+    /* "beng",
+    "mcoo",
+    "pers",
+    "asho",
+    "sphy",
+    "ragd",
+    "cypr",
+    "mala",
+    "lihu", */
+  ]
+
+  for (const breed of breeds) {
+    //Image URL parsed[0].url
+    const res = await fetch(
+      "https://api.thecatapi.com/v1/images/search?limit=1&breed_ids=beng",
+      {
+        method: "GET",
+        headers,
+      }
+    )
+
+    const data = await res.text()
+    const parsed = JSON.parse(data)
+
+    mostSearched.push({
+      imageUrl: parsed[0].url,
+      name: parsed[0].breeds[0].name,
+      id: parsed[0].breeds[0].name.id,
+    })
+  }
+
+  return mostSearched
+}
 const Home = async () => {
   const breeds = await getBreeds()
+  const mostSearched = await getMostSearched()
+  console.log(mostSearched)
 
   /*   const { width } = useViewportSize()
   const [bgImgSrc, setBgImgSRc] = useState({
@@ -122,6 +168,7 @@ const Home = async () => {
               Most Searched Breeds
             </h2>
             <h2 className="w-16 h-1 bg-i-primary rounded-full mt-2"></h2>
+            <RecentSearches />
           </div>
           <div className="md:flex justify-between justify-items-end items-baseline self-baseline">
             <h2 className="text-i-primary font-bold text-2xl max-w-xs md:max-w-lg md:text-5xl mt-5">

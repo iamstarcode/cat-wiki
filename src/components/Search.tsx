@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 import { Check, ChevronsUpDown } from "lucide-react"
-import { useMedia } from "react-use"
+import { useLocalStorage, useMedia } from "react-use"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -42,11 +42,18 @@ export default function Search(props: any) {
   const isDesktop = useMedia("(min-width: 768px)", true)
 
   const [selectedBreed, setSelectedBreed] = React.useState<Breed | null>(null)
+  const [recentSearches, setRecentSearches] = useLocalStorage<string[]>(
+    "recentSearches",
+    []
+  )
 
   React.useEffect(() => {
     if (selectedBreed != null) {
-      router.push(`breed/${selectedBreed.id}`)
-      console.log(selectedBreed)
+      // router.push(`breed/${selectedBreed.id}`)
+      //console.log(selectedBreed)
+      const updatedSearches = [selectedBreed.id, ...(recentSearches as any)]
+      const trimmedSearches = updatedSearches.slice(0, 5)
+      setRecentSearches(trimmedSearches)
     }
   }, [selectedBreed])
 
