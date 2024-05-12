@@ -38,6 +38,7 @@ const getBreeds = async () => {
 }
 const Home = async () => {
   const breeds = await getBreeds()
+
   /*   const { width } = useViewportSize()
   const [bgImgSrc, setBgImgSRc] = useState({
     src: "/img/HeroImagesm.png",

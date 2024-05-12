@@ -19,36 +19,15 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-type Status = {
-  value: string
+type Breed = {
+  id: string
   label: string
+  name: string
+  refrenceImageId: string
 }
 
-const statuses: Status[] = [
-  {
-    value: "backlog",
-    label: "Backlog",
-  },
-  {
-    value: "todo",
-    label: "Todo",
-  },
-  {
-    value: "in progress",
-    label: "In Progress",
-  },
-  {
-    value: "done",
-    label: "Done",
-  },
-  {
-    value: "canceled",
-    label: "Canceled",
-  },
-]
-
-export default function Search(breeds: any) {
-  const mapped = breeds.breeds.map((item: any) => ({
+export default function Search(props: any) {
+  const mapped = props.breeds.map((item: any) => ({
     name: item.name,
     id: item.id,
     value: item.id,
@@ -59,7 +38,13 @@ export default function Search(breeds: any) {
   const [open, setOpen] = React.useState(false)
   const isDesktop = useMedia("(min-width: 768px)", true)
 
-  const [selectedBreed, setSelectedBreed] = React.useState<Status | null>(null)
+  const [selectedBreed, setSelectedBreed] = React.useState<Breed | null>(null)
+
+  React.useEffect(() => {
+    if (selectedBreed != null) {
+      console.log(selectedBreed)
+    }
+  }, [selectedBreed])
 
   if (isDesktop) {
     return (
@@ -73,7 +58,7 @@ export default function Search(breeds: any) {
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0" align="start">
-          <StatusList
+          <BreedList
             mapped={mapped}
             setOpen={setOpen}
             setSelectedBreed={setSelectedBreed}
@@ -95,7 +80,7 @@ export default function Search(breeds: any) {
       </DrawerTrigger>
       <DrawerContent>
         <div className="mt-4 border-t">
-          <StatusList
+          <BreedList
             mapped={mapped}
             setOpen={setOpen}
             setSelectedBreed={setSelectedBreed}
@@ -106,33 +91,33 @@ export default function Search(breeds: any) {
   )
 }
 
-function StatusList({
+function BreedList({
   setOpen,
   setSelectedBreed,
   mapped,
 }: {
   setOpen: (open: boolean) => void
-  setSelectedBreed: (status: Status | null) => void
-  mapped: any
+  setSelectedBreed: (breeds: Breed | null) => void
+  mapped: Breed[]
 }) {
   return (
     <Command>
-      <CommandInput placeholder="Filter status..." />
+      <CommandInput placeholder="Filter Breed..." />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup>
-          {mapped.map((status: any) => (
+          {mapped.map((breed) => (
             <CommandItem
-              key={status.value}
-              value={status.value}
-              onSelect={(value) => {
+              key={breed.id}
+              value={breed.id}
+              onSelect={(id) => {
                 setSelectedBreed(
-                  statuses.find((priority) => priority.value === value) || null
+                  mapped.find((priority) => priority.id === id) || null
                 )
                 setOpen(false)
               }}
             >
-              {status.label}
+              {breed.label}
             </CommandItem>
           ))}
         </CommandGroup>
